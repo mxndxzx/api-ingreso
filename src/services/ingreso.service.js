@@ -7,31 +7,28 @@ class Service {
 
     constructor() {
         this.db = connect();
+        // Dev
+        this.db.sequelize.sync().then( () => {
+            logger.info('Synced DB');
+        });
     };
 
     async getUser(userId) {
-        
-        logger.info('Service::' + userId);
-        
         try {
             const user = await this.db.ingresos.findAll({
                 where : {
                     dni: userId
                 }
             });
-
-            logger.info('Service return::' + user);
             return user;
         } catch (err) {
-            logger.error('Error:: ' + err);
-            return [];
+            logger.error('Error::' + err);
+            // console.log(err.original)
+            return err;
         };
     };
     
     async getDate(date) {
-
-        logger.info('Service::' + date)
-
         try {
             const user = await this.db.ingresos.findAll({
                 where : {
@@ -50,12 +47,9 @@ class Service {
     async createReg(body) {
         let data = {};
 
-        logger.info('Service --> Input body::' + body)
-
         try {
             body.fecha_scan = new Date().toISOString();
             body.logon_scan = 'lp2076';
-            logger.info('Service --> Pre-DB body::' + body);
             
             data = await this.db.ingresos.create(body);
             return data;
@@ -71,9 +65,7 @@ class Service {
 
     async deleteReg(head) {
         let data = {};
-
-        logger.info('Service::' + head);
-
+        
         try {
             data = await this.db.ingresos.destroy({
                 where : {

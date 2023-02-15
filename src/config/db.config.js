@@ -26,20 +26,18 @@ const connect = () => {
             await sequelize.authenticate();
             logger.info("DB authenticated");
         } catch (err) {
-            logger.error('Error:: ' + err)
+            logger.error('Error::' + err)
             return err;
-        }
-    }
-
+        };
+    };
+    auth();
     
     const db = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
     db.ingresos = require('../model/ingreso.model')(sequelize, DataTypes, Model);
     
-    console.log(`db.ingresos --> `, db.ingresos);
-    // auth();
-    
+    // console.log(`db.ingresos --> `, db.ingresos);
     return db;
 };
 

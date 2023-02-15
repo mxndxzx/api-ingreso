@@ -1,14 +1,13 @@
 module.exports = (sequelize, DataTypes, Model) => {
 
-    class User extends Model { otherPublicField; };
+    class User extends Model {};
 
     User.init({
 
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
         },
 
         tramite: {
@@ -46,6 +45,10 @@ module.exports = (sequelize, DataTypes, Model) => {
             type: DataTypes.DATE,
         },
 
+        cuil: {
+            type: DataTypes.INTEGER,
+        },
+
         fecha_scan: {
             type: DataTypes.DATE,
             allowNull: false
@@ -56,7 +59,7 @@ module.exports = (sequelize, DataTypes, Model) => {
             allowNull: false
         },
     }, {
-        tableName: 'users',
+        tableName: process.env.DB_TABLE,
         modelName: 'User',
         timestamps: false,
         sequelize

@@ -7,15 +7,35 @@ class Controller {
     async getUser(req,res) {
         const userId = req.body.dni;
         logger.info('Controller:: ' + userId);
-        await service.getUser(userId);
-        
-        // res.send(new Date());
+
+        const response = await service.getUser(userId);
+
+        if (response.name) {
+            res.status(500).send({
+                status: "FAILED",
+                data: "Sequelize error! Watch log for details",
+            });
+        };
+
+        if ( response != '' ) {
+            res.status(200).send({
+                status: "OK",
+                data: response,
+            });
+        } else {
+            res.status(400).send({
+                status: "ERROR",
+                msg: "No records found with the given userId"
+            });
+        };
+        // Ready
     };
 
     async getDate(req,res) {
         const date = req.body.date;
         logger.info('Controller::' + date);
         return await service.getDate(date);
+        // Pending
     };
 
     async createReg(req,res) {
@@ -29,6 +49,7 @@ class Controller {
         const { body } = req;
         logger.info('Controller::' + body);
         return await service.updateReg(body);
+        // Pending
     };
 
     async deleteReg(req,res) {
@@ -38,6 +59,7 @@ class Controller {
         };
         logger.info('Controller::' + data);
         return await service.deleteReg(data);
+        // Pending
     };
 };
 
