@@ -6,21 +6,19 @@ class Controller {
 
     async getUser(req,res) {
         const userId = req.body.dni;
-        logger.info('Controller:: ' + userId);
+        // logger.info('Controller:: ' + userId);
 
         const response = await service.getUser(userId);
 
-        if (response.name) {
-            res.status(500).send({
-                status: "FAILED",
-                data: "Sequelize error! Watch log for details",
-            });
-        };
-
-        if ( response != '' ) {
+        if ( response != '' && !response.message ) {
             res.status(200).send({
                 status: "OK",
                 data: response,
+            });
+        } else if (response.name) {
+            res.status(500).send({
+                status: "FAILED",
+                msg: response.message,
             });
         } else {
             res.status(400).send({
@@ -33,16 +31,46 @@ class Controller {
 
     async getDate(req,res) {
         const date = req.body.date;
-        logger.info('Controller::' + date);
-        return await service.getDate(date);
-        // Pending
+        // logger.info('Controller::' + date);
+        const response = await service.getDate(date);
+
+        if ( response != '' ) {
+            res.status(200).send({
+                status: "OK",
+                data: response,
+            });
+        } else if (response.name) {
+            res.status(500).send({
+                status: "FAILED",
+                msg: response.message,
+            });
+        } else {
+            res.status(400).send({
+                status: "ERROR",
+                msg: "No records found with the given date"
+            });
+        };
+        // Ready
     };
 
     async createReg(req,res) {
         const { body } = req;
-        logger.info('Controller::' + body);
-        return await service.createReg(body);
-        // body == undefined ? res.status(500).send('body does not contain nothing') : res.status(200).send(body);
+        // console.log(req.body)
+        // logger.info('Controller::' + body);
+        const response = await service.createReg(body);
+
+        if (response.id) {
+            res.status(201).send({
+                status: "OK",
+                data: response
+            })
+        } else {
+            res.status(400).send({
+                status: "ERROR",
+                msg: response.message
+            })
+        };
+        // Ready
     };
 
     async updateReg(req,res) {

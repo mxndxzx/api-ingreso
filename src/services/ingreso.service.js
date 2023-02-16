@@ -1,6 +1,9 @@
 const { connect } = require('../config/db.config');
 const logger = require('../logger/api.logger');
 
+const schema = process.env.DB_SCHEMA;
+const table = process.env.DB_TABLE;
+
 class Service {
     
     db = {};
@@ -23,24 +26,18 @@ class Service {
             return user;
         } catch (err) {
             logger.error('Error::' + err);
-            // console.log(err.original)
             return err;
         };
     };
     
     async getDate(date) {
         try {
-            const user = await this.db.ingresos.findAll({
-                where : {
-                    fecha_scan: date
-                }
-            });
-            
-            logger.info('Service return::' + user);
+            const [user,meta] = await this.db.sequelize.query(`SELECT * FROM ${schema}.${table} WHERE DATE(fecha_scan) = '${date}'`);
+            // logger.info('Service return::' + user);
             return user;
         } catch (err) {
             logger.error('Error::' + err);
-            return [];
+            return err;
         }
     };
 
@@ -55,7 +52,7 @@ class Service {
             return data;
         } catch (err) {
             logger.error('Error::' + err);
-            return [];
+            return err;
         }
     };
 
