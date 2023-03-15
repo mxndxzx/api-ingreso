@@ -53,25 +53,22 @@ npm run dev
 ### Rutas
 Actualmente existen 5 métodos posibles:
 
-- *GET* `/api/v1/getUser` devuelve todos los registros para una misma persona. La petición requiere:
-    ```json
-    { "dni": "99999999" }
-    ```
-- *GET* `/api/v1/getDate` devuelve todos los registros de un mismo día. La petición requiere:
-    ```json
-    { "date": "2023-02-27" } // YYYY-MM-DD
+- *GET* `/api/v1/users/:userId` devuelve todos los registros para una misma persona. La petición requiere el DNI del usuario pasado como Query Parameter
+
+- *GET* `/api/v1/date/:date` devuelve todos los registros de un mismo día. La petición requiere la fecha como Query Parameter. Acepta estos dos formatos:
+    ```bash
+    YYYYMMDD
+    DD-MM-YYYY
     ```
 - *POST* `/api/v1/create` crea un registro de ingreso. La petición requiere:
     ```json
     {
-        "tramite": "9999999999",
-        "apellido": "apellidos", // Mandatory
-        "nombre": "nombres", // Mandatory
-        "sexo": "M",
-        "dn": "99999999", // Mandatory
-        "ejemplar": "A",
-        "fecha_nacimiento": "2023-01-09", // YYYY-MM-DD
-        "fecha_emision": "2023-01-03"
+        "user_surname": "<apellido>",
+        "user_name": "<nombre>",
+        "user_id": "99999999",
+        "type": "<ingreso / egreso>",
+        "area": "<nro area / departamento>",
+        "description": "<observaciones>"
     }
     ```
 - *PATCH* `/api/v1/update` ---> NO IMPLEMENTADO
@@ -114,10 +111,12 @@ control-ingreso/
 Este proyecto depende fuertemente de las siguientes librerías:
 
 - **Body Parser** *v1.20.1* --> Middleware que parsea los datos de las peticiones antes de manipularlas. Se accede mediante `req.body`
+- **CORS** *v2.8.5* --> Permite la comunicación segura bajo protocolo para poder consumir la API
 - **Dotenv** *v16.0.3* --> Crea variables de ambiente en el entorno de ejecución de Node, accesible por `process.env`
+- **Error Handler** *v1.5.1* --> Gestor de errores para distintos entornos de la API
 - **Express** *v4.18.2* --> Framework principal que facilita la creación de servicios. Provee rutas personalizadas, HTTP helpers, herramientas de testing, etc.
 - **Lodash** *v4.17.21* --> Facilita la manipulación de objetos y arrays
 - **Nodemon** *v2.0.20* --> Activa 'live reload' para no tener que reiniciar la api cada vez que se hagan cambios. Está instalada solo en el entorno `dev`
 - **PG** *v8.9.0* --> Punto de acceso a Postgres. Incluye drivers y parámetros de conexión
-- **Pine** *v1.1.1* **(EN DESUSO)** --> Logger. Pienso cambiarlo en un futuro
+- **Pine** *v1.1.1* --> Logger. Pienso cambiarlo en un futuro
 - **Sequelize** *v6.28.0* --> Query handler para Postgres. Valida métodos y datos
