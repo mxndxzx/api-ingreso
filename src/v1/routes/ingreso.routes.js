@@ -6,18 +6,18 @@ const router = express.Router();
 // URLs
 router
     // User regs
-    .get('/getUser', controller.getUser)
+    .get('/users/:userId', controller.getUser)
     
     // Date regs
-    .get('/getDate', controller.getDate)
+    .get('/date/:date', controller.getDate)
     
     // Create reg
-    .post('/create', controller.createReg)
+    .post('/users', controller.createReg)
 
     // Update reg
-    .patch('/update', controller.updateReg)
+    .patch('/users/:recId', controller.updateReg)
 
     // Delete reg
-    .delete('/delete', controller.deleteReg);
+    .delete('/users/:recId', controller.deleteReg);
 
 module.exports = router;

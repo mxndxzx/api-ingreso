@@ -9,61 +9,52 @@ module.exports = (sequelize, DataTypes, Model) => {
             primaryKey: true,
             autoIncrement: true,
         },
-
-        tramite: {
-            type: DataTypes.INTEGER,
-        },
         
-        apellido: {
-            type: DataTypes.STRING,
+        user_name: {
+            type: DataTypes.STRING(50),
             allowNull: false
         },
 
-        nombre: {
-            type: DataTypes.STRING,
+        user_surname: {
+            type: DataTypes.STRING(50),
             allowNull: false
         },
 
-        sexo: {
-            type: DataTypes.STRING,
-        },
-
-        dni: {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
 
-        ejemplar: {
-            type: DataTypes.STRING,
+        type: {
+            type: DataTypes.STRING(7),
+            allowNull: false
         },
 
-        fecha_nacimiento: {
-            type: DataTypes.DATE,
-        },
-
-        fecha_emision: {
-            type: DataTypes.DATE,
-        },
-
-        cuil: {
-            type: DataTypes.INTEGER,
-        },
-
-        fecha_scan: {
+        scan_time: {
             type: DataTypes.DATE,
             allowNull: false
         },
 
-        logon_scan: {
-            type: DataTypes.STRING,
+        area: {
+            type: DataTypes.STRING(50),
+            allowNull: false
+        },
+
+        description: {
+            type: DataTypes.STRING(500),
+        },
+
+        scan_logon: {
+            type: DataTypes.STRING(6),
             allowNull: false
         },
     }, {
         tableName: process.env.DB_TABLE,
         modelName: 'User',
-        timestamps: false,
+        createdAt: false,
+        updatedAt: true,
         sequelize
     });
-
+    
     return User;
 };

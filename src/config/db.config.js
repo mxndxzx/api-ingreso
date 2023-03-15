@@ -15,8 +15,8 @@ const connect = () => {
         pool: {
             max: 10,
             min: 0,
-            acquire: 20000,
-            idle: 3000
+            acquire: 0,
+            idle: 0
         },
         logging: (msg) => logger.info(msg),
     });
@@ -37,7 +37,7 @@ const connect = () => {
     db.sequelize = sequelize;
     db.ingresos = require('../model/ingreso.model')(sequelize, DataTypes, Model);
     
-    // console.log(`db.ingresos --> `, db.ingresos);
+    // console.log(`db.ingresos --> `, db.ingresos)
     return db;
 };
 
